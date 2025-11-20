@@ -1,0 +1,32 @@
+{
+    "manifest_version": 3,
+    "name": "YouTube Studio Notes",
+    "version": "1.0.0",
+    "description": "Add notes and tasks to YouTube Studio sidebar",
+    "permissions": [
+        "storage"
+    ],
+    "host_permissions": [
+        "https://studio.youtube.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://studio.youtube.com/*"
+            ],
+            "js": [
+                "src/content/index.tsx"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "assets/*"
+            ],
+            "matches": [
+                "https://studio.youtube.com/*"
+            ]
+        }
+    ]
+}
