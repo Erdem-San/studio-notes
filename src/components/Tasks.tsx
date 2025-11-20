@@ -67,7 +67,7 @@ function SortableTask({ task, onDelete }: { task: Task; onDelete: (id: string) =
       >
         <GripVertical className="w-5 h-5" />
       </button>
-      <span className="flex-1 text-xl cursor-default">
+      <span className="flex-1 text-2xl cursor-default">
         {task.text}
       </span>
       <button
@@ -105,7 +105,7 @@ function TaskColumn({
       className="flex flex-col gap-4 h-full"
     >
       <div className="flex items-center justify-between">
-        <h3 className="font-medium text-xl">{column.title}</h3>
+        <h3 className="font-medium text-2xl">{column.title}</h3>
         <span className="bg-[#303030] text-gray-300 text-md px-2 py-1 rounded-full">
           {tasks.length}
         </span>
@@ -121,7 +121,7 @@ function TaskColumn({
         </SortableContext>
 
         {tasks.length === 0 && (
-          <div className={`text-center text-gray-500 py-8 text-xl rounded-lg flex-1 flex items-center justify-center ${isOver ? 'border-blue-500 bg-[#1a2a3a]' : ''}`}>
+          <div className={`text-center text-gray-500 py-8 text-2xl rounded-lg flex-1 flex items-center justify-center ${isOver ? 'border-blue-500 bg-[#1a2a3a]' : ''}`}>
             {isOver ? 'Release to drop' : 'Drop tasks here'}
           </div>
         )}
@@ -271,7 +271,7 @@ export default function Tasks() {
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
           placeholder="Add a new task..."
-          className="flex-1 px-4 py-3 text-xl bg-[#1a1a1a] border border-[#303030] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 px-4 py-3 text-2xl bg-[#1a1a1a] border border-[#303030] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           type="submit"

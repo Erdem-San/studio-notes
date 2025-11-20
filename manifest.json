@@ -4,7 +4,8 @@
     "version": "1.0.0",
     "description": "Add notes and tasks to YouTube Studio sidebar",
     "permissions": [
-        "storage"
+        "storage",
+        "activeTab"
     ],
     "host_permissions": [
         "https://studio.youtube.com/*"
@@ -28,5 +29,9 @@
                 "https://studio.youtube.com/*"
             ]
         }
-    ]
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "icon.png"
+    }
 }

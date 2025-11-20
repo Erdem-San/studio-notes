@@ -1,13 +1,27 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>stunote</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio Notes Settings</title>
+  <style>
+    body {
+      width: 300px;
+      height: 180px;
+      margin: 0;
+      padding: 0;
+      background-color: #0f0f0f;
+      /* Uygulamanla aynı siyah tonu */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="studio-notes-extension-root" class="w-full h-full">
+    <div id="popup-root" class="w-full h-full"></div>
+  </div>
+  <script type="module" src="/src/popup.tsx"></script>
+</body>
+
 </html>

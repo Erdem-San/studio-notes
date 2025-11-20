@@ -5,14 +5,49 @@ import Notes from './components/Notes';
 import Tasks from './components/Tasks';
 
 function App() {
+  // 1. YENİ: Eklentinin genel açık/kapalı durumu için state
+  const [isEnabled, setIsEnabled] = useState(true);
+
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'notes' | 'tasks'>('notes');
 
+  // 2. YENİ: Chrome Storage dinleyicisi (Popup'tan gelen emri dinler)
+  useEffect(() => {
+    // Sadece chrome extension ortamında çalışması için kontrol
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      // a. İlk yüklemede durumu kontrol et
+      chrome.storage.local.get("extensionEnabled", (data) => {
+        // Eğer veri hiç yoksa (undefined) varsayılan true olsun
+        if (data.extensionEnabled !== undefined) {
+          setIsEnabled(data.extensionEnabled as boolean);
+        }
+      });
+
+      // b. Canlı değişiklikleri dinle (Popup'tan düğmeye basılınca burası çalışır)
+      const handleStorageChange = (changes: any) => {
+        if (changes.extensionEnabled) {
+          setIsEnabled(changes.extensionEnabled.newValue);
+        }
+      };
+
+      chrome.storage.onChanged.addListener(handleStorageChange);
+
+      // Cleanup: Component unmount olursa dinleyiciyi kaldır
+      return () => {
+        chrome.storage.onChanged.removeListener(handleStorageChange);
+      };
+    }
+  }, []);
+
+  // Mevcut toggle dinleyicisi (Sidebar aç/kapa)
   useEffect(() => {
     const handleToggle = () => setIsOpen((prev) => !prev);
     window.addEventListener('stunote-toggle', handleToggle);
     return () => window.removeEventListener('stunote-toggle', handleToggle);
   }, []);
+
+  // 3. YENİ: Eğer eklenti "Kapalı" ise, hiçbir şey render etme (DOM'dan silinir)
+  if (!isEnabled) return null;
 
   return (
     <div
@@ -40,7 +75,7 @@ function App() {
             <button
               onClick={() => setActiveTab('notes')}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 py-3 text-lg font-medium rounded-md transition-all",
+                "flex-1 flex items-center justify-center gap-2 py-3 text-xl font-medium rounded-md transition-all",
                 activeTab === 'notes'
                   ? "bg-[#303030] text-white shadow-sm"
                   : "text-[#aaa] hover:text-white hover:bg-[#282828]"
@@ -52,7 +87,7 @@ function App() {
             <button
               onClick={() => setActiveTab('tasks')}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 py-3 text-lg font-medium rounded-md transition-all",
+                "flex-1 flex items-center justify-center gap-2 py-3 text-xl font-medium rounded-md transition-all",
                 activeTab === 'tasks'
                   ? "bg-[#303030] text-white shadow-sm"
                   : "text-[#aaa] hover:text-white hover:bg-[#282828]"

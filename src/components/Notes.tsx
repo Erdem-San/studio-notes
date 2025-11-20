@@ -105,7 +105,7 @@ export default function Notes() {
     return (
         <div className="h-full flex flex-col gap-4">
             <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-medium">Notes</h2>
+                <h2 className="text-3xl font-medium">Notes</h2>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                         <Button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-xl">
@@ -115,8 +115,8 @@ export default function Notes() {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[525px] bg-[#1a1a1a] border-[#303030] text-white">
                         <DialogHeader>
-                            <DialogTitle className='text-xl'>Create New Note</DialogTitle>
-                            <DialogDescription className='text-lg'>
+                            <DialogTitle className='text-2xl'>Create New Note</DialogTitle>
+                            <DialogDescription className='text-xl'>
                                 Add a new note to your collection. Click save when you're done.
                             </DialogDescription>
                         </DialogHeader>
@@ -127,7 +127,7 @@ export default function Notes() {
                                     placeholder="Note title"
                                     value={newNoteTitle}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewNoteTitle(e.target.value)}
-                                    className="bg-[#2a2a2a] border-[#303030] text-white text-lg"
+                                    className="bg-[#2a2a2a] border-[#303030] text-white text-xl"
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -136,15 +136,15 @@ export default function Notes() {
                                     placeholder="Note content"
                                     value={newNoteContent}
                                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewNoteContent(e.target.value)}
-                                    className="bg-[#2a2a2a] border-[#303030] text-white min-h-[150px] text-lg"
+                                    className="bg-[#2a2a2a] border-[#303030] text-white min-h-[150px] text-xl"
                                 />
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="bg-[#303030] border-[#303030] text-white hover:bg-[#404040] hover:text-white text-lg">
+                            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="bg-[#303030] border-[#303030] text-white hover:bg-[#404040] hover:text-white text-xl">
                                 Cancel
                             </Button>
-                            <Button onClick={handleCreateNote} className="bg-blue-600 hover:bg-blue-700 text-white text-lg">
+                            <Button onClick={handleCreateNote} className="bg-blue-600 hover:bg-blue-700 text-white text-xl">
                                 Save
                             </Button>
                         </DialogFooter>
@@ -164,7 +164,7 @@ export default function Notes() {
                                 : 'border-[#303030] hover:border-[#404040]'
                                 }`}
                         >
-                            <div className="font-medium truncate text-xl">{note.title}</div>
+                            <div className="font-medium truncate text-2xl">{note.title}</div>
                             <div className="text-base text-gray-400 truncate mt-1">
                                 {note.content.substring(0, 50)}{note.content.length > 50 ? '...' : ''}
                             </div>
@@ -175,7 +175,7 @@ export default function Notes() {
                     ))}
 
                     {notes.length === 0 && (
-                        <div className="text-center text-gray-500 py-8 text-xl">
+                        <div className="text-center text-gray-500 py-8 text-2xl">
                             No notes yet. Create your first note!
                         </div>
                     )}
@@ -186,7 +186,7 @@ export default function Notes() {
                     {selectedNote ? (
                         <>
                             <div className="flex justify-between items-start mb-4">
-                                <h3 className="text-2xl font-medium">{selectedNote.title}</h3>
+                                <h3 className="text-3xl font-medium">{selectedNote.title}</h3>
                                 <button
                                     onClick={() => handleDeleteNote(selectedNote.id)}
                                     className="p-2 text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
@@ -197,12 +197,12 @@ export default function Notes() {
                             <textarea
                                 value={selectedNote.content}
                                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleUpdateNote(selectedNote.id, e.target.value)}
-                                className="flex-1 p-4 bg-[#1a1a1a] border border-[#303030] rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-xl"
+                                className="flex-1 p-4 bg-[#1a1a1a] border border-[#303030] rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-2xl"
                                 placeholder="Note content"
                             />
                         </>
                     ) : (
-                        <div className="flex-1 flex items-center justify-center text-gray-500 text-xl">
+                        <div className="flex-1 flex items-center justify-center text-gray-500 text-2xl">
                             {notes.length > 0
                                 ? 'Select a note to view or edit'
                                 : 'Create a new note to get started'}
