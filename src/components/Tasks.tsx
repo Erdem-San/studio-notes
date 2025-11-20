@@ -56,7 +56,7 @@ function SortableTask({ task, onDelete }: { task: Task; onDelete: (id: string) =
       ref={setNodeRef}
       style={style}
       className={cn(
-        "flex items-center gap-3 p-4 bg-[#1a1a1a] border border-[#303030] rounded-md group",
+        "flex items-center gap-3 p-4 bg-[#1a1a1a] cursor-default border border-[#303030] rounded-md group",
         isDragging && "opacity-50"
       )}
       {...attributes}
@@ -67,12 +67,12 @@ function SortableTask({ task, onDelete }: { task: Task; onDelete: (id: string) =
       >
         <GripVertical className="w-5 h-5" />
       </button>
-      <span className="flex-1 text-xl">
+      <span className="flex-1 text-xl cursor-default">
         {task.text}
       </span>
-      <button 
+      <button
         onClick={() => onDelete(task.id)}
-        className="opacity-0 group-hover:opacity-100 p-1.5 text-red-500 hover:bg-red-500/10 rounded transition-all"
+        className="opacity-0 cursor-pointer group-hover:opacity-100 p-1.5 text-red-500 hover:bg-red-500/10 rounded transition-all"
       >
         <Trash2 className="w-5 h-5" />
       </button>
@@ -80,18 +80,18 @@ function SortableTask({ task, onDelete }: { task: Task; onDelete: (id: string) =
   );
 }
 
-function TaskColumn({ 
-  column, 
+function TaskColumn({
+  column,
   tasks,
   onDeleteTask,
   isOver
-}: { 
-  column: Column; 
+}: {
+  column: Column;
   tasks: Task[];
   onDeleteTask: (id: string) => void;
   isOver?: boolean;
 }) {
-  const { setNodeRef } = useSortable({ 
+  const { setNodeRef } = useSortable({
     id: column.id,
     data: {
       type: 'column',
@@ -100,8 +100,8 @@ function TaskColumn({
   });
 
   return (
-    <div 
-      ref={setNodeRef} 
+    <div
+      ref={setNodeRef}
       className="flex flex-col gap-4 h-full"
     >
       <div className="flex items-center justify-between">
@@ -110,8 +110,8 @@ function TaskColumn({
           {tasks.length}
         </span>
       </div>
-      
-      <div 
+
+      <div
         className={`flex flex-col gap-3 min-h-[100px] flex-1 ${isOver ? 'border-2 border-dashed border-blue-500 rounded-md p-2 bg-[#1a2a3a]' : 'border-2 border-dashed border-[#303030] rounded-md p-2'}`}
       >
         <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
@@ -119,7 +119,7 @@ function TaskColumn({
             <SortableTask key={task.id} task={task} onDelete={onDeleteTask} />
           ))}
         </SortableContext>
-        
+
         {tasks.length === 0 && (
           <div className={`text-center text-gray-500 py-8 text-xl rounded-lg flex-1 flex items-center justify-center ${isOver ? 'border-blue-500 bg-[#1a2a3a]' : ''}`}>
             {isOver ? 'Release to drop' : 'Drop tasks here'}
@@ -183,26 +183,26 @@ export default function Tasks() {
 
   const handleDragOver = (event: DragOverEvent) => {
     const { over } = event;
-    
+
     if (!over) {
       setOverId(null);
       return;
     }
-    
+
     // Check if we're over a column directly
     const overColumn = columns.find(col => col.id === over.id);
     if (overColumn) {
       setOverId(over.id as string);
       return;
     }
-    
+
     // Check if we're over a task, and if so, get its column
     const overTask = tasks.find(task => task.id === over.id);
     if (overTask) {
       setOverId(overTask.status); // Set the column ID as overId
       return;
     }
-    
+
     setOverId(null);
   };
 
@@ -223,9 +223,9 @@ export default function Tasks() {
     const overColumn = columns.find(col => col.id === overId);
     if (overColumn) {
       // Move task to the column
-      const newTasks = tasks.map(task => 
-        task.id === activeId 
-          ? { ...task, status: overColumn.id } 
+      const newTasks = tasks.map(task =>
+        task.id === activeId
+          ? { ...task, status: overColumn.id }
           : task
       );
       saveTasks(newTasks);
@@ -237,19 +237,19 @@ export default function Tasks() {
     if (overTask) {
       // If it's a different column, move the task to that column
       if (overTask.status !== activeTask.status) {
-        const newTasks = tasks.map(task => 
-          task.id === activeId 
-            ? { ...task, status: overTask.status } 
+        const newTasks = tasks.map(task =>
+          task.id === activeId
+            ? { ...task, status: overTask.status }
             : task
         );
         saveTasks(newTasks);
         return;
       }
-      
+
       // If it's the same column, reorder the tasks
       const activeIndex = tasks.findIndex(task => task.id === activeId);
       const overIndex = tasks.findIndex(task => task.id === overId);
-      
+
       if (activeIndex !== overIndex) {
         const newTasks = arrayMove(tasks, activeIndex, overIndex);
         saveTasks(newTasks);
