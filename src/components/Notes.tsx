@@ -159,8 +159,11 @@ export default function Notes() {
                         <div
                             key={note.id}
                             onClick={() => setSelectedNoteId(note.id)}
+                            style={{
+                                backgroundColor: selectedNoteId === note.id ? '#1a2a3a' : '#1a1a1a'
+                            }}
                             className={`p-3 bg-[#1a1a1a] border rounded-md cursor-pointer transition-colors ${selectedNoteId === note.id
-                                ? 'border-blue-500 bg-[#1a2a3a]'
+                                ? 'border-[#1a2a3a] bg-[#1a2a3a]'
                                 : 'border-[#303030] hover:border-[#404040]'
                                 }`}
                         >

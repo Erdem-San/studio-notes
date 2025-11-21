@@ -51,6 +51,7 @@ function App() {
 
   return (
     <div
+      id="stunote-root"
       className={cn(
         "fixed inset-y-0 right-0 z-[9999] w-2/3 bg-[#0f0f0f] text-white border-l border-[#303030] shadow-2xl transform transition-transform duration-300 ease-in-out font-roboto",
         isOpen ? "translate-x-0" : "translate-x-full",

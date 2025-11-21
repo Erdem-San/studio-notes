@@ -1,25 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from '../App';
-import '../index.css';
 import { waitForElement, createSidebarButton } from '../utils/dom';
+import { ShadowRootProvider } from '../contexts/ShadowRootContext';
+import indexCss from '../index.css?inline';
 
 console.log('YouTube Studio Notes extension loading...');
 
-// Mount React App
+// Create container for shadow DOM
+const container = document.createElement('div');
+container.id = 'stunote-container';
+document.body.appendChild(container);
+
+// Create shadow root for complete CSS isolation
+const shadowRoot = container.attachShadow({ mode: 'open' });
+
+// Create root element inside shadow DOM
 const root = document.createElement('div');
 root.id = 'stunote-root';
-root.style.position = 'absolute';
-root.style.top = '0';
-root.style.left = '0';
-root.style.width = '0';
-root.style.height = '0';
-root.style.zIndex = '9999';
-document.body.appendChild(root);
+shadowRoot.appendChild(root);
 
+// Inject CSS into shadow DOM
+const style = document.createElement('style');
+style.textContent = indexCss;
+shadowRoot.appendChild(style);
+
+// Render React app with Shadow Root context
 ReactDOM.createRoot(root).render(
     <React.StrictMode>
-        <App />
+        <ShadowRootProvider shadowRoot={shadowRoot}>
+            <App />
+        </ShadowRootProvider>
     </React.StrictMode>
 );
 
