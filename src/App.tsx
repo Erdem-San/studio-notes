@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { X, Notebook, ListTodo } from 'lucide-react';
+import { X, Notebook, ListTodo, CalendarIcon } from 'lucide-react';
 import { cn } from './lib/utils';
 import Notes from './components/Notes';
 import Tasks from './components/Tasks';
+import Calendar from './components/Calendar';
 
 function App() {
   // 1. YENİ: Eklentinin genel açık/kapalı durumu için state
   const [isEnabled, setIsEnabled] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'notes' | 'tasks'>('notes');
+  const [activeTab, setActiveTab] = useState<'notes' | 'tasks' | 'calendar'>('notes');
+  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
+
 
   // 2. YENİ: Chrome Storage dinleyicisi (Popup'tan gelen emri dinler)
   useEffect(() => {
@@ -45,6 +48,7 @@ function App() {
     window.addEventListener('stunote-toggle', handleToggle);
     return () => window.removeEventListener('stunote-toggle', handleToggle);
   }, []);
+
 
   // 3. YENİ: Eğer eklenti "Kapalı" ise, hiçbir şey render etme (DOM'dan silinir)
   if (!isEnabled) return null;
@@ -97,12 +101,26 @@ function App() {
               <ListTodo className="w-5 h-5" />
               Tasks
             </button>
+            <button
+              onClick={() => setActiveTab('calendar')}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-2 py-3 text-xl font-medium rounded-md transition-all",
+                activeTab === 'calendar'
+                  ? "bg-[#303030] text-white shadow-sm"
+                  : "text-[#aaa] hover:text-white hover:bg-[#282828]"
+              )}
+            >
+              <CalendarIcon className="w-5 h-5" />
+              Calendar
+            </button>
           </div>
         </div>
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
-          {activeTab === 'notes' ? <Notes /> : <Tasks />}
+          {activeTab === 'notes' && <Notes selectedNoteId={selectedNoteId} onNoteSelected={() => setSelectedNoteId(null)} />}
+          {activeTab === 'tasks' && <Tasks />}
+          {activeTab === 'calendar' && <Calendar />}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import {
     Dialog,
@@ -20,7 +20,16 @@ interface Note {
     createdAt: Date;
 }
 
-export default function Notes() {
+interface NotesProps {
+    selectedNoteId?: string | null;
+    onNoteSelected?: () => void;
+}
+
+export interface NotesRef {
+    selectNote: (noteId: string) => void;
+}
+
+const Notes = forwardRef<NotesRef, NotesProps>(({ selectedNoteId: externalSelectedNoteId, onNoteSelected }, ref) => {
     const [notes, setNotes] = useState<Note[]>([]);
     const [newNoteTitle, setNewNoteTitle] = useState('');
     const [newNoteContent, setNewNoteContent] = useState('');
@@ -59,6 +68,23 @@ export default function Notes() {
             setSelectedNoteId(notes[0].id);
         }
     }, [notes, selectedNoteId]);
+
+    // Handle external note selection (from Calendar)
+    useEffect(() => {
+        if (externalSelectedNoteId) {
+            setSelectedNoteId(externalSelectedNoteId);
+            if (onNoteSelected) {
+                onNoteSelected();
+            }
+        }
+    }, [externalSelectedNoteId, onNoteSelected]);
+
+    // Expose selectNote method to parent via ref
+    useImperativeHandle(ref, () => ({
+        selectNote: (noteId: string) => {
+            setSelectedNoteId(noteId);
+        }
+    }));
 
     const saveNotes = (newNotes: Note[]) => {
         try {
@@ -215,4 +241,8 @@ export default function Notes() {
             </div>
         </div>
     );
-}
+});
+
+Notes.displayName = 'Notes';
+
+export default Notes;
